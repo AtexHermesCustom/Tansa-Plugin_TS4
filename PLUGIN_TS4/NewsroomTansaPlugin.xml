@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Newsroom Tansa Plugin Configuration File
+ Revision History
+    20110520 Atex-jpm: added the subCharCode attributes to //SpaceCommands/Command entries
+	20070216: initial configuration
+-->
+
+<NewsroomTansaPlugin>
+
+	<PluginConfiguration>
+		<!-- ParentAppBin: complete path of Newsroom -->
+		<!-- note: deprecated. ParentAppBin is now read from the INI file -->
+		<ParentAppBin/>
+		<!-- ParentAppUserName: name of current user. 
+			If blank, Windows user will be recorded -->
+		<ParentAppUserName/>
+		<!-- ParentAppUiLanguageCode: language code for the Tansa client.
+			If blank, English is assumed -->
+		<ParentAppUiLanguageCode/>
+		<!-- SoftHyphenCharCode: char code in decimal to be used 
+			for Newsroom soft hyphens -->
+		<SoftHyphenCharCode>7</SoftHyphenCharCode>
+		<!-- CommandSubCharCode: char code in decimal to be used 
+			to substitute Newsroom typographical commands and tags -->
+		<CommandSubCharCode>32001</CommandSubCharCode>
+		<!-- EscapeCommandChars: option to mark characters that start and end Newsroom commands
+		     entered by the user as literal characters
+			1=set option on; 0=set option off
+        		e.g. user manually entered [HELLO] as a correction
+	                 if option=1, this will be treated as literal text
+        	         if option=0, this will be treated as a tag -->
+		<EscapeCommandChars>1</EscapeCommandChars>
+		<!-- CommandChars: characters that start and end Newsroom commands
+	             (in regular expression pattern format) -->
+		<CommandChars>\&lt;\&gt;\[\]\\{}</CommandChars>
+		<!-- NotesMarker: character used to separate notes to be proofed from the text content -->
+		<NotesMarker>|</NotesMarker>
+		<!-- SaveBeforeProofing: option to save Newsroom object before starting Tansa proofing
+			1=set option on; 0=set option off -->
+		<SaveBeforeProofing>1</SaveBeforeProofing>
+		<!-- DebugMode: option to write debug info to log files
+			1=set option on; 0=set option off -->
+		<DebugMode>0</DebugMode>
+		<!-- LogPath: directory for plugin log files.
+			If blank, %TEMP% will be used -->
+		<LogPath/>
+		<!-- LogRetentionDays: number, in days to keep log files -->
+		<LogRetentionDays>10</LogRetentionDays>
+	</PluginConfiguration>
+
+	<!-- InvisibleCommands:
+		List of Newsroom commands that are not displayed in Newsroom
+		withParam="0" means the command is used in Newsroom by itself
+		withParam="1" means the command has parameters
+	-->
+	<InvisibleCommands>
+		<Command withParam="0">{TEXT}</Command>
+		<Command withParam="0">{HEADLINE}</Command>
+		<Command withParam="0">{SUMMARY}</Command>
+		<Command withParam="0">{CAPTION}</Command>
+		<Command withParam="0">&lt;WC1&gt;</Command>
+		<Command withParam="0">&lt;WC&gt;</Command>
+		<Command withParam="1">&lt;US&gt;</Command>
+		<Command withParam="1">&lt;QA&gt;</Command>
+		<Command withParam="1">&lt;QC&gt;</Command>
+		<Command withParam="1">&lt;QJ&gt;</Command>
+		<Command withParam="1">&lt;QL&gt;</Command>
+		<Command withParam="1">&lt;QR&gt;</Command>
+	</InvisibleCommands>
+
+	<!-- SpaceCommands:
+		List of Newsroom commands that are used to represent space
+		withParam="0" means the command is used in Newsroom by itself
+		withParam="1" means the command has parameters
+		
+		subCharCode: this attribute contains the Unicode character code used to
+          represent the special space in Tansa
+	-->
+	<SpaceCommands>
+		<Command withParam="0" subCharCode="8195">&lt;EM&gt;</Command>
+		<Command withParam="0" subCharCode="8194">&lt;EN&gt;</Command>
+		<Command withParam="0" subCharCode="8202">&lt;ET&gt;</Command>
+		<Command withParam="0" subCharCode="8199">&lt;FG&gt;</Command>
+		<Command withParam="0" subCharCode="8201">&lt;TH&gt;</Command>
+	</SpaceCommands>
+
+    <!-- CheckTags:
+		List of NewsRoom tags that will tell the plug-in to proof content of Newroom notes.
+		Notes content tagged by any of the items listed below will be included for proofing.
+ 	-->
+	<CheckTags>
+		<Tag>WEBHED</Tag>
+		<Tag>PROOFTAG1</Tag>
+		<Tag>PROOFTAG2</Tag>
+		<Tag>PROOFTAG3</Tag>		
+	</CheckTags>
+
+</NewsroomTansaPlugin>
+
+
+
+
+
