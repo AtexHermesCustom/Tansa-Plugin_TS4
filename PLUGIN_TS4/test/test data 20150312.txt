@@ -39,4 +39,16 @@ the quik <NO1>bruwn fox jumpd ovir<NO>the lazy dog.
 ----------------------------
 simple test notes 
 
-the quiCk <NO1>X<NO> jumped over<NO1>XX<NO> lazy dog.
+the quick <NO1>X<NO>jumped over<NO1>the rainbow<NO> lazy dog.
+
+
+
+-------------------------------
+
+test typo commands only
+
+Phil Mickelsson <WC1>will warmm up for his Champions Tournnament debut in Shanghai by playiing at the Singapore Open.
+
+<CS9.7>"We are delighted Mickelson has chosen to make his Asian Tour debut at the Singapore Open," a tournament spokesman \[this is an esc char\] said in a newz releaze on Monday.</CS>
+
+The american lefthander joins 2005 and 2006 winner Adam Scott, world number four Ernie Els and US Open champon Angel Cabrera in the field at Sentosa's par-71 Serapong championshipp course from November 1-4.
