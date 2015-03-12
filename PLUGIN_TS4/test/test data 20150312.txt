@@ -39,4 +39,4 @@ the quik <NO1>bruwn fox jumpd ovir<NO>the lazy dog.
 ----------------------------
 simple test notes 
 
-the quik <NO1>X<NO> jumpd ovir<NO1>XX<NO> lazy dog.
+the quiCk <NO1>X<NO> jumped over<NO1>XX<NO> lazy dog.
