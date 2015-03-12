@@ -1,0 +1,42 @@
+the quik [WEBHED]<NO1>bruwn fox jumpd ovir<NO>[/WEBHED]the lazy dog.
+the quik [WEBHED]bruwn fox <NO1>jumpd ovir<NO>the lazy dog. the <NO1>quik bruwn fox jumpd<NO>[/WEBHED] dog.
+the quik bruwn fox [WEBHED]jumpd <NO1>ovir the lazy dog.
+
+
+123456789012345678901234567890
+the quik [WEBHED]<NO1>bruwn fox jumpd ovir<NO>[/WEBHED]the lazy dog.
+
+---------------------------
+
+tag only
+
+the quik [WEBHED]bruwn fox jumpd ovir[/WEBHED]the lazy dog.
+the quik [WEBHED]bruwn fox jumpd ovirthe lazy dog. the quik bruwn fox jumpd[/WEBHED] dog.
+the quik bruwn fox [WEBHED]jumpd ovir the lazy dog.
+
+
+123456789012345678901234567890
+the quik [WEBHED]bruwn fox jumpd ovir<NO>[/WEBHED]the lazy dog.
+
+
+---------------------------
+simple test tags
+
+the quik[WEBHED]bruwn fox jumpd ovir[/WEBHED] the lazy dog.
+hello world!
+
+---------------------------
+with notes only
+
+the quik <NO1>bruwn fox jumpd ovir<NO>the lazy dog.
+the quik bruwn fox <NO1>jumpd ovir<NO>the lazy dog. the <NO1>quik bruwn fox jumpd<NO> dog.
+the quik bruwn fox jumpd <NO1>ovir the lazy dog.
+
+
+123456789012345678901234567890
+the quik <NO1>bruwn fox jumpd ovir<NO>the lazy dog.
+
+----------------------------
+simple test notes 
+
+the quik <NO1>X<NO> jumpd ovir<NO1>XX<NO> lazy dog.
