@@ -35,6 +35,9 @@
 		<CommandChars>\&lt;\&gt;\[\]\\{}</CommandChars>
 		<!-- NotesMarker: character used to separate notes to be proofed from the text content -->
 		<NotesMarker>|</NotesMarker>
+		<!-- ApplyNotesCommandsInCorrections: setting whether to wrap corrections in notice mode with Notes commands <NO1> and <NO>
+			1=set option on; 0=set option off -->
+		<ApplyNotesCommandsInCorrections>0</ApplyNotesCommandsInCorrections>
 		<!-- SaveBeforeProofing: option to save Newsroom object before starting Tansa proofing
 			1=set option on; 0=set option off -->
 		<SaveBeforeProofing>1</SaveBeforeProofing>

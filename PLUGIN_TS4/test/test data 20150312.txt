@@ -42,6 +42,16 @@ simple test notes
 the quick <NO1>X<NO>jumped over<NO1>the rainbow<NO> lazy dog.
 
 
+--------------------------------
+
+test notes correction within webhed
+test <CF10>embedded notes</CF10>
+
+[TEXT-BOLD]the quick brown fox<NO1>jumped<NO> over the lazy doggy. the quick brown fox jumped over the lazy doggy.[TEXT]
+the quick brown fox jumped [WEBHED]one two three <NO1>hello wurld <NO>
+<NO1>goodd bye<NO>four five sixx[/WEBHED] the lazy doggy. the quick brown fox jumped over the lazy doggy.
+the quick brown fox jumped over the lazy doggy. the qui<NO1>yabadabadoo<NO>k brown fox jumpd ovir the lazzy doggy.
+when you <NO1>[WEBHED]passsed[/WEBHED]<NO>the balll yeah 
 
 -------------------------------
 

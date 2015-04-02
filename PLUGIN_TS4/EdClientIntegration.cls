@@ -643,10 +643,12 @@ On Error GoTo EH
     End If
 
 
-    'check if correction is part of a Newsroom note
-    'if it is part of note, put in the Note commands with the correction
-    sNewText = AdjustIfPartOfNote(sNewText, lStartPos)
-
+    If g_bApplyNotesCommandsInCorrections Then  '4.0.0.5 20150402 jpm: adjust if setting is on
+        'check if correction is part of a Newsroom note
+        'if it is part of note, put in the Note commands with the correction
+        sNewText = AdjustIfPartOfNote(sNewText, lStartPos)
+    End If
+    
 
     'adjust the start pos since hermes doesn't count some chars
     lStartPos = AdjustStartPos(lStartPos)

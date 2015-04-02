@@ -32,6 +32,8 @@ Option Explicit
 '
 ' Version History:
 '
+' 4.0.0.5 20150402 jpm: added config setting ApplyNotesCommandsInCorrections
+'   - setting whether to wrap corrections in notice mode with Notes commands <NO1> and <NO>
 ' 4.0.0.4 20150215 jpm: updated NRCOM functions to support Unicode
 '   -use UTF-16 versions of the following functions: GetContentCom, Replace
 '   -replace message to "MSG_TSNE_MESSAGE"
@@ -230,6 +232,9 @@ On Error GoTo EH
     If Not LoadConfigNode(configDoc, "//PluginConfiguration/CommandChars", g_sCommandChars) Then Exit Function
     
     If Not LoadConfigNode(configDoc, "//PluginConfiguration/NotesMarker", g_sNotesMarker) Then Exit Function
+    
+    If Not LoadConfigNode(configDoc, "//PluginConfiguration/ApplyNotesCommandsInCorrections", sTemp) Then Exit Function
+    g_bApplyNotesCommandsInCorrections = IIf(Trim$(sTemp) = "1", True, False)
     
     If Not LoadConfigNode(configDoc, "//PluginConfiguration/SaveBeforeProofing", sTemp) Then Exit Function
     g_bSaveBeforeProofing = IIf(Trim$(sTemp) = "1", True, False)

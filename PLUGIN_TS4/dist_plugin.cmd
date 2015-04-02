@@ -1,3 +1,3 @@
-copy newsroomtansaplugin.exe "C:\Program Files\Tansa 4\Client\Extensions\Newsroom\"
+copy newsroomtansaplugin.exe "C:\Program Files (x86)\Tansa 4\Client\Extensions\TS4NE\"
 
 pause

@@ -23,6 +23,7 @@ Public g_lCommandSubCharCode As Long 'code for char to be used to substitute typ
 Public g_bEscapeCommandChars As Boolean 'whether the plug-in would escape start/end command chars entered by the user
 Public g_sCommandChars As String 'in regular expression format
 Public g_sNotesMarker As String 'char to separate notes to be proofed from regular text content
+Public g_bApplyNotesCommandsInCorrections As Boolean 'whether to wrap corrections in notice mode with Notes commands <NO1> and <NO>
 Public g_bSaveBeforeProofing As Boolean 'whether to save object first before proofing or not
 Public g_bDebug As Boolean
 Public g_sLogPath As String
