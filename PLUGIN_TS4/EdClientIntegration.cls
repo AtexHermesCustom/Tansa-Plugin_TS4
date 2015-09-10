@@ -38,13 +38,6 @@ Private m_bCommandsShown As Boolean
 Private m_bNotesShown As Boolean
 
 'constants
-'notes opening and closing commands
-Private Const NOTESOPENTAG As String = "<NO1>"
-Private Const NOTESCLOSETAG As String = "<NO>"
-
-'lowercase, to differentiate notes to be proofed from regular notes
-Private Const PROOFNOTESOPENTAG As String = "<no1>"
-Private Const PROOFNOTESCLOSETAG As String = "<no>"
 
 'Newsroom menu id's
 Private Const MENUID_SHOWREVISIONS As Integer = 10281
@@ -336,6 +329,10 @@ On Error GoTo EH
     Dim oTextCollection As New TS4C.GenericCollection
     Dim i As Integer
     
+    Dim node As IXMLDOMNode
+    Dim attrOpen As IXMLDOMNode
+    Dim attrClose As IXMLDOMNode
+    
     m_sTextToProof = ""
     m_sOrigText = ""
     
@@ -358,9 +355,20 @@ On Error GoTo EH
     'Newsroom notes handling
     HandleProofTags m_sTextToProof
     HandleNotes m_sTextToProof
+    
     'remove the note commands from orig text too because they are not visible in Newsroom-not included in pos counts
-    m_sOrigText = Replace(m_sOrigText, NOTESOPENTAG, "")
-    m_sOrigText = Replace(m_sOrigText, NOTESCLOSETAG, "")
+    For Each node In g_xdomNotesCommands
+        Set attrOpen = node.Attributes.getNamedItem("open")
+        If Not (attrOpen Is Nothing) Then
+            m_sOrigText = Replace(m_sOrigText, Trim$(attrOpen.nodeValue), "", , , vbBinaryCompare)
+        End If
+    
+        Set attrClose = node.Attributes.getNamedItem("close")
+        If Not (attrClose Is Nothing) Then
+            m_sOrigText = Replace(m_sOrigText, Trim$(attrClose.nodeValue), "", , , vbBinaryCompare)
+        End If
+    Next
+    
     For i = 1 To m_colNotesMarkerPos.Count
         m_sOrigText = Mid$(m_sOrigText, 1, m_colNotesMarkerPos.Item(i)) & _
             g_sNotesMarker & Mid$(m_sOrigText, m_colNotesMarkerPos.Item(i) + 1)  'note collection contains 0-based values
@@ -1081,7 +1089,7 @@ On Error GoTo EH
             sNote = Mid$(m_sOrigText, lNoteStartPos, (lNoteEndPos - lNoteStartPos + 1))
             If g_bDebug Then WriteLog "Found embedded note: " & sNote
             'record embedded note and wrap it with notes commands
-            sEmbeddedNotes = sEmbeddedNotes & NOTESOPENTAG & sNote & NOTESCLOSETAG
+            sEmbeddedNotes = sEmbeddedNotes & g_sDefaultNotesOpenTag & sNote & g_sDefaultNotesCloseTag
         End If
     Next i
         
@@ -1261,6 +1269,11 @@ On Error GoTo EH
     Dim bProofNote As Boolean
     Dim sTempOpen As String
     Dim sTempClose As String
+    Dim node As IXMLDOMNode
+    Dim attrOpen As IXMLDOMNode
+    Dim attrClose As IXMLDOMNode
+    Dim sProofNotesOpenTag As String
+    Dim sProofNotesCloseTag As String
 
     Set m_colNotesPos = New Collection  'collection for notes pos
     Set m_colNotesMarkerPos = New Collection 'collection for proof notes marker
@@ -1268,21 +1281,39 @@ On Error GoTo EH
     lSearchPos = 1 'pos where search starts
     iNoteOpenTagCount = 0
     iNoteCloseTagCount = 0
+    
+    'loop through notes commands and replace them with default ones
+    For Each node In g_xdomNotesCommands
+        Set attrOpen = node.Attributes.getNamedItem("open")
+        If Not (attrOpen Is Nothing) Then
+            sText = Replace(sText, Trim$(attrOpen.nodeValue), g_sDefaultNotesOpenTag, , , vbBinaryCompare)
+        End If
+    
+        Set attrClose = node.Attributes.getNamedItem("close")
+        If Not (attrClose Is Nothing) Then
+            sText = Replace(sText, Trim$(attrClose.nodeValue), g_sDefaultNotesCloseTag, , , vbBinaryCompare)
+        End If
+    Next
+    
+    'proof notes tags - used to be able to distinguish notes text that need to be proofed.
+    'just convert to lowercase
+    sProofNotesOpenTag = LCase$(g_sDefaultNotesOpenTag)
+    sProofNotesCloseTag = LCase$(g_sDefaultNotesCloseTag)
 
     Do
-        lOpenPos = InStr(lSearchPos, sText, NOTESOPENTAG)
+        lOpenPos = InStr(lSearchPos, sText, g_sDefaultNotesOpenTag)
 
         If lOpenPos > 0 Then
             iNoteOpenTagCount = iNoteOpenTagCount + 1 'increment counter
-            lClosePos = InStr(lOpenPos + Len(NOTESOPENTAG), sText, NOTESCLOSETAG) 'search for closing
+            lClosePos = InStr(lOpenPos + Len(g_sDefaultNotesOpenTag), sText, g_sDefaultNotesCloseTag) 'search for closing
 
             If lClosePos > 0 Then
                 iNoteCloseTagCount = iNoteCloseTagCount + 1 'increment counter
-                lCloseEndPos = lClosePos + Len(NOTESCLOSETAG) - 1
-                sNote = Mid$(sText, lOpenPos + Len(NOTESOPENTAG), (lClosePos - lOpenPos) - Len(NOTESOPENTAG))
+                lCloseEndPos = lClosePos + Len(g_sDefaultNotesCloseTag) - 1
+                sNote = Mid$(sText, lOpenPos + Len(g_sDefaultNotesOpenTag), (lClosePos - lOpenPos) - Len(g_sDefaultNotesOpenTag))
             Else
                 lCloseEndPos = Len(sText)
-                sNote = Mid$(sText, lOpenPos + Len(NOTESOPENTAG))
+                sNote = Mid$(sText, lOpenPos + Len(g_sDefaultNotesOpenTag))
             End If
                         
             If g_bDebug Then WriteLog "Found note: " & sNote & _
@@ -1291,8 +1322,8 @@ On Error GoTo EH
             bProofNote = IsNoteWithinProofTags(lOpenPos, lCloseEndPos)
             If bProofNote Then
                 'to differentiate from regular notes, use lowercase commands
-                sTempOpen = PROOFNOTESOPENTAG
-                sTempClose = PROOFNOTESCLOSETAG
+                sTempOpen = sProofNotesOpenTag
+                sTempClose = sProofNotesCloseTag
             Else
                 'it's a regular note - replace all chars in the note to the substitution char,
                 'except escaped chars, the esc char and newline
@@ -1300,22 +1331,22 @@ On Error GoTo EH
                 If g_bDebug Then WriteLog "Converted note: " & sNote
                 
                 'regular notes commands
-                sTempOpen = NOTESOPENTAG
-                sTempClose = NOTESCLOSETAG
+                sTempOpen = g_sDefaultNotesOpenTag
+                sTempClose = g_sDefaultNotesCloseTag
             End If
                                 
             'at this point, the opening and closing note tags are still included in the text
             'so that pos can be compared with proof tags pos
             sText = Mid$(sText, 1, lOpenPos - 1) & _
                 sTempOpen & sNote & IIf(lClosePos > 0, sTempClose, "") & _
-                Mid$(sText, IIf(lClosePos > 0, lClosePos + Len(NOTESCLOSETAG), Len(sText) + 1))
+                Mid$(sText, IIf(lClosePos > 0, lClosePos + Len(g_sDefaultNotesCloseTag), Len(sText) + 1))
             
             'store what newsroom thinks are the opening and closing pos of the note
             'newsroom does not count the opening and closing note tags
             'e.g. <NO1>note text<NO> - NoteStartPos=1, NoteEndPos=9
-            lNoteStartPos = (lOpenPos + Len(NOTESOPENTAG)) - _
-                (iNoteOpenTagCount * Len(NOTESOPENTAG)) - _
-                IIf(iNoteCloseTagCount > 0, ((iNoteCloseTagCount - IIf(lClosePos > 0, 1, 0)) * Len(NOTESCLOSETAG)), 0)
+            lNoteStartPos = (lOpenPos + Len(g_sDefaultNotesOpenTag)) - _
+                (iNoteOpenTagCount * Len(g_sDefaultNotesOpenTag)) - _
+                IIf(iNoteCloseTagCount > 0, ((iNoteCloseTagCount - IIf(lClosePos > 0, 1, 0)) * Len(g_sDefaultNotesCloseTag)), 0)
             lNoteStartPos = lNoteStartPos + (m_colNotesMarkerPos.Count * Len(g_sNotesMarker))
             lNoteEndPos = lNoteStartPos + Len(sNote) - 1
             
@@ -1331,19 +1362,19 @@ On Error GoTo EH
             m_colNotesPos.Add (lNoteStartPos & "|" & lNoteEndPos)
             If g_bDebug Then WriteLog "Store: NoteStartPos=" & lNoteStartPos & ", NoteEndPos=" & lNoteEndPos
                 
-            lSearchPos = IIf(lClosePos > 0, lClosePos + Len(NOTESCLOSETAG), Len(sText) + 1)
+            lSearchPos = IIf(lClosePos > 0, lClosePos + Len(g_sDefaultNotesCloseTag), Len(sText) + 1)
         End If
     Loop While lOpenPos > 0
     
     'finally remove all instances of the opening and closing notes command
     'since they are not included by newsroom in pos counting
-    sText = Replace(sText, NOTESOPENTAG, "", , , vbBinaryCompare)
-    sText = Replace(sText, NOTESCLOSETAG, "", , , vbBinaryCompare)
+    sText = Replace(sText, g_sDefaultNotesOpenTag, "", , , vbBinaryCompare)
+    sText = Replace(sText, g_sDefaultNotesCloseTag, "", , , vbBinaryCompare)
     
     'replace notes commands of those notes to be proofed with the marker to separate them from regular text
     'to avoid: [webhed]<NO1>good<NO>[/webhed]becomes bad -> "goodbecomes bad"
-    sText = Replace(sText, PROOFNOTESOPENTAG, g_sNotesMarker, , , vbBinaryCompare)
-    sText = Replace(sText, PROOFNOTESCLOSETAG, g_sNotesMarker, , , vbBinaryCompare)
+    sText = Replace(sText, sProofNotesOpenTag, g_sNotesMarker, , , vbBinaryCompare)
+    sText = Replace(sText, sProofNotesCloseTag, g_sNotesMarker, , , vbBinaryCompare)
     
     Exit Sub
 EH:
@@ -1394,7 +1425,7 @@ On Error GoTo EH
         
         If (lStartPos + 1) >= Val(sNotePos(0)) And (lStartPos + 1) <= Val(sNotePos(1)) Then
             'correction is part of note - wrap with Newsroom Notes commands
-            sNewText = NOTESOPENTAG & sNewText & NOTESCLOSETAG
+            sNewText = g_sDefaultNotesOpenTag & sNewText & g_sDefaultNotesCloseTag
             If g_bDebug Then WriteLog "Correction is part of note. Converted text=" & sNewText
             Exit For
         End If

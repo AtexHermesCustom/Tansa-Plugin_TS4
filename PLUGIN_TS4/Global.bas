@@ -32,6 +32,10 @@ Public g_iLogRetentionDays As Integer
 Public g_xdomCheckTags As IXMLDOMNodeList 'list of tags to be used for proofing notes content
 Public g_xdomInvisibleCommands As IXMLDOMNodeList 'list of Newsroom invisible commands
 Public g_xdomSpaceCommands As IXMLDOMNodeList 'list of Newsroom commands that can represent space
+Public g_xdomNotesCommands As IXMLDOMNodeList 'list of Newsroom commands used for marking notes
+
+Public g_sDefaultNotesOpenTag As String 'default notes open command/tag
+Public g_sDefaultNotesCloseTag As String 'default notes close command/tag
 
 Public g_colSpecialSpaces As Collection 'collection of special spaces, with the unicode substitution char as the key
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--  Newsroom Tansa Plugin Configuration File
  Revision History
+	20150910 jpm: addition of NotesCommands section
     20110520 Atex-jpm: added the subCharCode attributes to //SpaceCommands/Command entries
 	20070216: initial configuration
 -->
@@ -86,6 +87,14 @@
 		<Command withParam="0" subCharCode="8199">&lt;FG&gt;</Command>
 		<Command withParam="0" subCharCode="8201">&lt;TH&gt;</Command>
 	</SpaceCommands>
+	
+	<!-- NotesCommands:
+		List of Newsroom commands used to mark text as notes (notice mode)
+	-->
+	<NotesCommands defaultOpen="&lt;NM1&gt;" defaultClose="&lt;NM&gt;">
+		<Command open="&lt;NM1&gt;" close="&lt;NM&gt;"/>
+		<Command open="&lt;NO1&gt;" close="&lt;NO&gt;"/>
+	</NotesCommands>
 
     <!-- CheckTags:
 		List of NewsRoom tags that will tell the plug-in to proof content of Newroom notes.

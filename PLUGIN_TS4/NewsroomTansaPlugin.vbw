@@ -1,10 +1,10 @@
 Global = 110, 111, 697, 554, 
-EdClientIntegration = 66, 66, 653, 510, Z
+EdClientIntegration = 66, 66, 653, 510, 
 TextObject = 132, 132, 719, 576, 
 Log = 88, 88, 675, 532, 
 ErrorMod = 44, 44, 631, 488, 
 VersionInfo = 154, 154, 779, 598, 
-frmMain = 88, 116, 958, 604, , 66, 87, 936, 575, C
+frmMain = 88, 116, 958, 604, Z, 66, 87, 936, 575, C
 WinMessaging = 110, 110, 708, 558, 
 RegExMod = 198, 198, 833, 646, 
 INI = 0, 0, 611, 448, 

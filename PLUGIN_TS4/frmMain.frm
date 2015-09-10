@@ -32,6 +32,7 @@ Option Explicit
 '
 ' Version History:
 '
+' 4.0.0.6 20150910 jpm: get list of Notice Mode commands from the config file (//NotesCommands/Command)
 ' 4.0.0.5 20150402 jpm: added config setting ApplyNotesCommandsInCorrections
 '   - setting whether to wrap corrections in notice mode with Notes commands <NO1> and <NO>
 ' 4.0.0.4 20150215 jpm: updated NRCOM functions to support Unicode
@@ -254,6 +255,13 @@ On Error GoTo EH
     
     'get list of commands that can represent space
     Set g_xdomSpaceCommands = configDoc.selectNodes("//SpaceCommands/Command")
+    
+    'get list of commands that are used to mark notes
+    Set g_xdomNotesCommands = configDoc.selectNodes("//NotesCommands/Command")
+    
+    'default notes commands/tags
+    If Not LoadConfigNode(configDoc, "//NotesCommands/@defaultOpen", g_sDefaultNotesOpenTag) Then Exit Function
+    If Not LoadConfigNode(configDoc, "//NotesCommands/@defaultClose", g_sDefaultNotesCloseTag) Then Exit Function
     
     '4.0.0.1 20110520 put the special spaces in a collection for later use
     Dim node As IXMLDOMNode
